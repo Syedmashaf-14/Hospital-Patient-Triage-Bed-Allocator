@@ -16,9 +16,19 @@ if [ -f /tmp/admissions_pid ]; then
     echo "Stopping Admissions (PID: $PID)..."
     kill -SIGTERM $PID
     rm -f /tmp/admissions_pid
+    
+    # Give admissions a brief moment (1 second) to run its own cleanup
+    sleep 1
 else
     echo "Admissions PID not found"
 fi
+
+echo "Cleaning up IPC resources..."
+
+# ================= IPC CLEANUP =================
+# Failsafe: Force remove Shared Memory just in case admissions crashed.
+# 1234 is the SHM_KEY we defined in admissions.c
+ipcrm -M 1234 2>/dev/null
 
 # Cleanup FIFOs
 rm -f /tmp/triage_pipe

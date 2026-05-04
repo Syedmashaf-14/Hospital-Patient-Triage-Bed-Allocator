@@ -8,18 +8,27 @@
 #Purpose: Show ward capacity and admitting the patient
 #Usage :  ./script/start_hospital.sh 
 # ================================================================================
-# Cleanup old FIFOs
+#!/bin/bash
+
+# Remove old FIFOs
 rm -f /tmp/triage_pipe
 rm -f /tmp/discharge_fifo
 
 # Create FIFOs
-mkfifo /tmp/triage_pipe
-mkfifo /tmp/discharge_fifo
+mkfifo /tmp/triage_pipe || { echo "Failed to create triage pipe"; exit 1; }
+mkfifo /tmp/discharge_fifo || { echo "Failed to create discharge pipe"; exit 1; }
+
+# Permissions (important)
+chmod 666 /tmp/triage_pipe
+chmod 666 /tmp/discharge_fifo
 
 echo "================================="
 echo " Hospital System Starting..."
 echo " Ward Capacity: 10 beds"
 echo "================================="
+
+# Small delay (prevents race issues)
+sleep 1
 
 # Start admissions
 ./admissions &

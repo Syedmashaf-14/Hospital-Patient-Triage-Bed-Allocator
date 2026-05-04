@@ -1,0 +1,28 @@
+===== First-Come First-Served (FCFS) SIMULATION =====
+Gantt Chart:
+[0] --- (P1) --- [5] --- (P2) --- [13] --- (P3) --- [15] --- (P4) --- [21] --- (P5) --- [25] 
+
+Metrics:
+Patient 1 | Priority: 3 | Burst: 5 | Wait: 0 | Turnaround: 5
+Patient 2 | Priority: 1 | Burst: 8 | Wait: 5 | Turnaround: 13
+Patient 3 | Priority: 4 | Burst: 2 | Wait: 13 | Turnaround: 15
+Patient 4 | Priority: 2 | Burst: 6 | Wait: 15 | Turnaround: 21
+Patient 5 | Priority: 1 | Burst: 4 | Wait: 21 | Turnaround: 25
+
+Average Waiting Time: 10.80
+Average Turnaround Time: 15.80
+
+===== Priority Scheduling SIMULATION =====
+Gantt Chart:
+[0] --- (P2) --- [8] --- (P5) --- [12] --- (P4) --- [18] --- (P1) --- [23] --- (P3) --- [25] 
+
+Metrics:
+Patient 2 | Priority: 1 | Burst: 8 | Wait: 0 | Turnaround: 8
+Patient 5 | Priority: 1 | Burst: 4 | Wait: 8 | Turnaround: 12
+Patient 4 | Priority: 2 | Burst: 6 | Wait: 12 | Turnaround: 18
+Patient 1 | Priority: 3 | Burst: 5 | Wait: 18 | Turnaround: 23
+Patient 3 | Priority: 4 | Burst: 2 | Wait: 23 | Turnaround: 25
+
+Average Waiting Time: 12.20
+Average Turnaround Time: 17.20
+

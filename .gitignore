@@ -1,0 +1,13 @@
+# Compiled executables
+   admissions
+   patient_simulator
+   schedular_sim
+   memory_sim
+
+   # Log files and data
+   *.txt
+   *.dat
+   /logs/
+
+   # OS generated files
+   .DS_Store
