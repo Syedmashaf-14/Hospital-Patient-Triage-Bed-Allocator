@@ -1,216 +1,414 @@
-Hospital Patient Triage and Bed Allocator System
+````md
+# 🏥 Hospital Patient Triage and Bed Allocator System
 
-A comprehensive Operating Systems simulation project built entirely in C for Linux/POSIX environments.
+A comprehensive **Operating Systems simulation project** built entirely in **C for Linux/POSIX environments**.  
 This project simulates a high-concurrency hospital triage and admission system to demonstrate practical implementation of core Operating System concepts such as:
 
-Process Management
-Inter-Process Communication (IPC)
-CPU Scheduling
-POSIX Threads
-Synchronization
-Dynamic Memory Allocation
-Paging & Fragmentation
-Virtual Memory Mapping
+- Process Management
+- Inter-Process Communication (IPC)
+- CPU Scheduling
+- POSIX Threads
+- Synchronization
+- Dynamic Memory Management
+- Paging & Fragmentation
+- Virtual Memory Mapping
 
-Instead of a traditional frontend application, this system acts as a low-level backend server that manages patient flow, hospital bed allocation, and resource synchronization using system-level Linux APIs.
+---
 
-Features
-Multi-process patient admission simulation
-FIFO-based IPC communication
-Concurrent multithreaded hospital server
-Priority-based patient scheduling
-Producer-Consumer synchronization model
-Bed allocation using memory management algorithms
-Paging and fragmentation simulation
-POSIX shared synchronization primitives
-Memory-mapped logging system
-Stress testing for concurrency validation
-Project Architecture
+## 📚 Table of Contents
 
-The system was developed in 4 major phases, each targeting a different Operating Systems concept.
+- [Project Overview](#-project-overview)
+- [Core Operating System Concepts](#-core-operating-system-concepts)
+- [System Architecture](#️-system-architecture)
+- [Phase 1 — Process Management & IPC](#-phase-1--process-management--ipc)
+- [Phase 2 — CPU Scheduling Simulation](#-phase-2--cpu-scheduling-simulation)
+- [Phase 3 — POSIX Threads & Synchronization](#-phase-3--posix-threads--synchronization)
+- [Phase 4 — Dynamic Memory Management](#-phase-4--dynamic-memory-management)
+- [Technical Stack](#️-technical-stack)
+- [Project Structure](#-project-structure)
+- [Compilation](#-compilation)
+- [Running the Hospital Server](#️-running-the-hospital-server)
+- [Stress Testing](#-stress-testing)
+- [Memory Management Simulator](#-memory-management-simulator)
+- [Educational Purpose](#-educational-purpose)
+- [Future Improvements](#-future-improvements)
+- [License](#-license)
 
-Phase 1 — Process Management & IPC
+---
 
-This phase establishes the foundational multi-process environment.
+# 📌 Project Overview
 
-Implemented Concepts
-Process Creation
-Used fork() and execv() to spawn independent patient simulator processes dynamically.
-Inter-Process Communication (IPC)
-Communication handled through Linux Named Pipes (FIFOs):
+This project behaves like a low-level backend operating-system server that manages:
+
+- Patient admissions
+- Bed allocation
+- Resource synchronization
+- Waitlists
+- Scheduling
+- Memory allocation
+
+The system was developed in **4 major phases**, each focused on a different Operating Systems concept.
+
+---
+
+# 🧠 Core Operating System Concepts
+
+✅ Process Creation  
+✅ Inter-Process Communication (IPC)  
+✅ CPU Scheduling Algorithms  
+✅ Multithreading  
+✅ Mutex Locks  
+✅ Semaphores  
+✅ Condition Variables  
+✅ Dynamic Memory Allocation  
+✅ Paging & Fragmentation  
+✅ Virtual Memory Mapping  
+
+---
+
+# 🏗️ System Architecture
+
+```text
+               +----------------------+
+               |  Patient Simulators  |
+               +----------+-----------+
+                          |
+                          | FIFO PIPE
+                          v
+              +-----------------------+
+              |  Receptionist Thread  |
+              +-----------+-----------+
+                          |
+                          v
+              +-----------------------+
+              |  Scheduler Thread     |
+              +-----------+-----------+
+                          |
+          +---------------+---------------+
+          |                               |
+          v                               v
++-------------------+         +-------------------+
+| ICU Nurse Thread  |         | Ward Nurse Thread |
++-------------------+         +-------------------+
+````
+
+---
+
+# 🔹 Phase 1 — Process Management & IPC
+
+## 📍 Objectives
+
+Build a multi-process hospital admission environment.
+
+## ⚙️ Features
+
+### 🔸 Process Creation
+
+Implemented using:
+
+```c
+fork()
+execv()
+```
+
+### 🔸 IPC Mechanism
+
+Used Linux Named Pipes (FIFOs):
+
+```bash
 /tmp/triage_pipe
 /tmp/discharge_fifo
-Asynchronous Execution
-Bash scripts generate multiple background processes simultaneously.
-Simulates real-world concurrent hospital admissions.
-Key Files
+```
+
+### 🔸 Concurrent Stress Testing
+
+Multiple patient processes launched simultaneously using Bash scripting.
+
+## 📂 Important Files
+
+```bash
 patient_simulator.c
 triage_server.c
 stress_test.sh
-Phase 2 — CPU Scheduling Simulation
+```
 
-This phase manages incoming patients when the hospital reaches full capacity.
+---
 
-Implemented Concepts
-Waitlist Management
-Dynamic linked-list based Priority Queue implemented for patient waiting lists.
-Scheduling Algorithms
+# 🔹 Phase 2 — CPU Scheduling Simulation
 
-Implemented scheduling simulations for:
+## 📍 Objectives
 
-First-Come First-Served (FCFS)
-Priority Scheduling
-Performance Metrics
+Handle patient overflow when hospital beds are full.
 
-The simulator calculates:
+## ⚙️ Features
 
-Average Waiting Time
-Average Turnaround Time
-Execution Visualization
-Generates Gantt-chart style logs for analysis.
-Key File
+### 🔸 Priority Queue Waitlist
+
+* Linked-list based implementation
+
+### 🔸 Scheduling Algorithms
+
+Implemented:
+
+* FCFS Scheduling
+* Priority Scheduling
+
+### 🔸 Performance Metrics
+
+Calculated:
+
+* Average Waiting Time
+* Average Turnaround Time
+
+### 🔸 Gantt Chart Style Logs
+
+```text
+| P1 | P2 | P3 | P4 |
+0    2    5    8   10
+```
+
+## 📂 Important File
+
+```bash
 scheduler_sim.c
-Phase 3 — POSIX Threads & Synchronization
+```
 
-The architecture was upgraded into a highly concurrent multithreaded server.
+---
 
-Implemented Concepts
-Thread Pool Architecture
+# 🔹 Phase 3 — POSIX Threads & Synchronization
 
-Dedicated threads were created using pthreads:
+## 📍 Objectives
 
-Receptionist Thread (Producer)
-Scheduler Thread (Consumer)
-Nurse Threads
-Mutex Synchronization
-Shared hospital bed bitmap protected using pthread_mutex_t.
-Semaphores
-sem_t used to enforce ward capacity limits.
+Transform the system into a highly concurrent multithreaded server.
+
+## ⚙️ Features
+
+### 🔸 Thread Pool Architecture
+
+Implemented:
+
+* Receptionist Thread
+* Scheduler Thread
+* Nurse Threads
+
+### 🔸 Mutex Locks
+
+Protected shared hospital bed resources using:
+
+```c
+pthread_mutex_t
+```
+
+### 🔸 Semaphores
+
+Used:
+
+```c
+sem_t
+```
+
+To enforce ward capacity limits.
 
 Example:
 
-ICU ward maximum capacity = 4 beds
-Condition Variables
-pthread_cond_t used to eliminate busy waiting.
-Threads sleep and wake immediately when beds become available.
-Synchronization Problems Solved
-Producer-Consumer Problem
-Race Conditions
-Resource Contention
-Phase 4 — Dynamic Memory Management
+* Maximum ICU beds = 4
 
-The hospital ward is modeled as a contiguous block of memory.
+### 🔸 Condition Variables
 
-Implemented Concepts
-Contiguous Memory Allocation
+Implemented:
 
-Runtime-selectable allocation strategies:
+```c
+pthread_cond_t
+```
 
-First-Fit
-Best-Fit
-Worst-Fit
-Coalescing & Defragmentation
+To avoid busy waiting.
 
-Adjacent free memory blocks are automatically merged during discharge:
+## ✅ Problems Solved
 
-Left Coalescing
-Right Coalescing
-Paging Simulation
-Fixed-size bed pages implemented.
-Internal fragmentation calculated and reported.
-Virtual Memory Logging
-Admission/discharge logs written using:
+* Producer-Consumer Problem
+* Race Conditions
+* Resource Contention
+
+---
+
+# 🔹 Phase 4 — Dynamic Memory Management
+
+## 📍 Objectives
+
+Model hospital beds as memory blocks.
+
+## ⚙️ Features
+
+### 🔸 Contiguous Allocation Algorithms
+
+Implemented:
+
+* First-Fit
+* Best-Fit
+* Worst-Fit
+
+Runtime Selection:
+
+```bash
+./memory_sim --strategy best
+```
+
+### 🔸 Coalescing & Defragmentation
+
+Automatically merges adjacent free blocks:
+
+* Left Coalescing
+* Right Coalescing
+
+### 🔸 Paging Simulation
+
+Implemented:
+
+* Fixed-size pages
+* Internal Fragmentation calculation
+
+### 🔸 Virtual Memory Logging
+
+Used:
+
+```c
 mmap()
 msync()
+```
 
-This bypasses standard file I/O overhead.
+To bypass standard file I/O overhead.
 
-Key File
+## 📂 Important File
+
+```bash
 memory_sim.c
-Technical Stack
-Component	Technology
-Language	C (C99/C11)
-OS Environment	Linux / POSIX
-Compiler	GCC
-Build Tool	GNU Make
-Threading	pthread
-Synchronization	semaphore
-Memory APIs	mmap, msync
-IPC	FIFO / Named Pipes
-Project Structure
+```
+
+---
+
+# 🛠️ Technical Stack
+
+| Technology  | Usage            |
+| ----------- | ---------------- |
+| C (C99/C11) | Core Development |
+| GCC         | Compilation      |
+| GNU Make    | Build Automation |
+| pthread     | Multithreading   |
+| semaphore   | Synchronization  |
+| mmap        | Virtual Memory   |
+| FIFO Pipes  | IPC              |
+| Linux/POSIX | Environment      |
+
+---
+
+# 📁 Project Structure
+
+```bash
 .
 ├── Makefile
-├── scheduler_sim.c
-├── memory_sim.c
 ├── patient_simulator.c
 ├── triage_server.c
+├── scheduler_sim.c
+├── memory_sim.c
 ├── script/
 │   ├── start_hospital.sh
 │   └── stress_test.sh
 ├── logs/
 └── README.md
-Compilation
+```
 
-Navigate to the project root directory and compile using:
+---
 
+# ⚡ Compilation
+
+```bash
 make clean
 make
-Running the Hospital Server (Phases 1–3)
+```
 
-Start the multithreaded hospital server:
+---
 
+# ▶️ Running the Hospital Server
+
+```bash
 ./script/start_hospital.sh
-Stress Testing
+```
 
-To simulate high-concurrency patient admissions:
+---
 
+# 🧪 Stress Testing
+
+```bash
 ./script/stress_test.sh
+```
 
-This script launches multiple patient simulator processes concurrently.
+This simulates high-concurrency patient admissions.
 
-Running Memory Management Simulator (Phase 4)
+---
 
-Run the memory allocation simulation independently:
+# 🧠 Memory Management Simulator
 
-Best-Fit
+## 🔹 Best-Fit
+
+```bash
 ./memory_sim --strategy best
-First-Fit
+```
+
+## 🔹 First-Fit
+
+```bash
 ./memory_sim --strategy first
-Worst-Fit
+```
+
+## 🔹 Worst-Fit
+
+```bash
 ./memory_sim --strategy worst
-Sample Concepts Demonstrated
-Operating Systems Topics Covered
-Process Creation
-Process Synchronization
-CPU Scheduling
-Producer-Consumer Problem
-IPC Mechanisms
-Mutex Locks
-Semaphores
-Condition Variables
-Dynamic Memory Allocation
-Paging
-Fragmentation
-Virtual Memory
-Memory Mapping
-Educational Purpose
+```
 
-This project was designed to provide practical hands-on implementation of advanced Operating Systems concepts typically taught theoretically in university courses.
+---
 
-It demonstrates how low-level Linux system programming can be used to build scalable concurrent systems.
+# 📊 Example Features Demonstrated
 
-Future Improvements
+| Category           | Concepts              |
+| ------------------ | --------------------- |
+| Process Management | fork(), execv()       |
+| IPC                | FIFO Named Pipes      |
+| Scheduling         | FCFS, Priority        |
+| Synchronization    | Mutex, Semaphores     |
+| Concurrency        | POSIX Threads         |
+| Memory             | Paging, Fragmentation |
+| Virtual Memory     | mmap(), msync()       |
 
-Possible future enhancements include:
+---
 
-Shared Memory IPC
-Real-time Scheduling Algorithms
-GUI Monitoring Dashboard
-Network-based Patient Admission
-Database Integration
-Distributed Hospital Cluster Simulation
-Deadlock Detection Module
-Authors
+# 🎯 Educational Purpose
 
-Operating Systems Semester Project
-Developed using Linux System Programming and POSIX APIs.
+This project was developed to provide practical implementation of advanced Operating Systems concepts typically taught theoretically in university courses.
+
+It demonstrates how Linux system programming can be used to build scalable concurrent systems.
+
+---
+
+# 🔮 Future Improvements
+
+* Shared Memory IPC
+* GUI Monitoring Dashboard
+* Real-time Scheduling
+* Database Integration
+* Network-based Admissions
+* Deadlock Detection
+* Distributed Hospital Cluster
+
+---
+
+# 👨‍💻 Authors
+
+**Operating Systems Semester Project**
+Built using Linux System Programming & POSIX APIs.
+
+---
+
+
+```
+```
