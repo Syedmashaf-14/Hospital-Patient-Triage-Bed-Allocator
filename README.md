@@ -1,7 +1,3 @@
-Aapka project kaafi professional aur technical hai. GitHub README ke liye maine icons/emojis ko remove kar diya hai aur formatting ko mazeed clean aur structured banaya hai taake focus sirf content aur technology par rahe.
-
-Aap isse copy karke apni `README.md` mein use kar sakte hain:
-
 ---
 
 # Hospital Patient Triage and Bed Allocator System
@@ -157,9 +153,3 @@ make
 
 ---
 
-## Authors
-**Operating Systems Semester Project**  
-Developed using Linux System Programming and POSIX APIs.
-
-## License
-This project is intended for educational and academic use only.
